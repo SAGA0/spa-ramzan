@@ -1,18 +1,12 @@
+import { docReducer } from '@/entities/doc'
 import { configureStore, createReducer } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux/es/exports'
 import { TypedUseSelectorHook } from 'react-redux/es/types'
 
-const initSTate = {
-	name: 'Ramza',
-	age: 19,
-}
-
-const r = createReducer(initSTate, () => {})
-
 export const store = configureStore({
 	reducer: {
-		user: r,
+		documents: docReducer,
 	},
 	devTools: true,
 })
