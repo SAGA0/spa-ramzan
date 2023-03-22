@@ -1,3 +1,4 @@
+import { useAppSelector } from '@/app/store/store'
 import React from 'react'
 
 const Home = () => {
