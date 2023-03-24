@@ -1,5 +1,5 @@
 import { apiInstance } from './../base'
-import { DocModel } from './models'
+import { CreateDocModel, DocModel } from './models'
 
 class DocsService {
 	async getDocs() {
@@ -12,6 +12,22 @@ class DocsService {
 
 	async deleteDoc(id: string) {
 		await apiInstance.post(`/ru/data/v3/testmethods/docs/userdocs/delete/${id}`)
+	}
+
+	async updateDoc(id: string, data: DocModel) {
+		await apiInstance.post(
+			`/ru/data/v3/testmethods/docs/userdocs/set/${id}`,
+			data,
+		)
+	}
+
+	async createDoc(doc: CreateDocModel) {
+		const { data } = await apiInstance.post<DocModel>(
+			`/ru/data/v3/testmethods/docs/userdocs/create`,
+			doc,
+		)
+
+		return data
 	}
 }
 

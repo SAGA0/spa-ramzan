@@ -1,23 +1,49 @@
 import { useAppDispatch, useAppSelector } from '@/app/store/store'
-import { deleteDoc, getDocs } from '@/entities/doc'
+import { createDoc, deleteDoc, getDocs, setUpdateDoc, updateDoc } from '@/entities/doc'
+import { CustomCreateDocModal } from '@/features/create-document-modal'
+import { CreateDocModel } from '@/shared/api/docs'
 import CustomTable from '@/shared/ui/table'
 import { Button, Container, Skeleton } from '@mui/material'
+import { useEffect, useState } from 'react'
+
+
 
 const Docs = () => {
     const dispatch = useAppDispatch()
-    const { items, isLoading } = useAppSelector((state) => state.documents)
+    const { items, isLoading, updatingDoc } = useAppSelector((state) => state.documents)
+    const [isActive, setIsActive] = useState(false)
 
-    const handleGetDocs = () => {
+    useEffect(() => {
         dispatch(getDocs())
-    }
+    }, [])
 
     const handleDelete = (id: string) => {
         dispatch(deleteDoc(id))
     }
 
+    const setUpdate = (id: string, data: CreateDocModel) => {
+        dispatch(setUpdateDoc(data))
+        handleOpenModal()
+    }
+
+    const handleCreateDoc = (data: CreateDocModel) => {
+        dispatch(createDoc(data))
+        handleCloseModal()
+    }
+
+    const handleUpdateDoc = (data: CreateDocModel) => {
+        dispatch(updateDoc({ ...data, id: updatingDoc?.id as string }))
+        handleCloseModal()
+    }
+
+    const handleOpenModal = () => setIsActive(true)
+    const handleCloseModal = () => setIsActive(false)
+
+
+
     return (
         <Container component={'main'}>
-            <Button onClick={handleGetDocs}>GetDocs</Button>
+            <Button onClick={handleOpenModal}>Create Doc</Button>
             {isLoading ? (
                 <>
                     <Skeleton animation="wave" />
@@ -27,7 +53,11 @@ const Docs = () => {
                     <Skeleton animation="wave" />
                 </>
             ) : (
-                <CustomTable data={items} onDelete={handleDelete} />
+                <>
+                    <CustomTable data={items} onDelete={handleDelete} onChange={setUpdate} />
+                    <CustomCreateDocModal open={isActive} onClose={handleCloseModal} onSubmit={handleCreateDoc} onUpdate={handleUpdateDoc} />
+                </>
+
             )}
         </Container>
     )

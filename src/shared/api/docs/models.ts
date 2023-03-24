@@ -9,3 +9,5 @@ export interface DocModel {
 	employeeSigDate: Date | string
 	employeeSignatureName: string
 }
+
+export type CreateDocModel = Omit<DocModel, 'id'>

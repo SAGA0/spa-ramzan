@@ -1,5 +1,5 @@
-import { DocModel } from '@/shared/api/docs'
-import { Delete } from '@mui/icons-material'
+import { CreateDocModel, DocModel } from '@/shared/api/docs'
+import { Delete, Edit } from '@mui/icons-material'
 import {
     TableContainer,
     Paper,
@@ -8,6 +8,7 @@ import {
     TableRow,
     TableBody,
     IconButton,
+    Button,
 } from '@mui/material'
 import moment from 'moment'
 import { FC } from 'react'
@@ -18,9 +19,11 @@ interface Props {
     headerConfig?: TableHeaderConfig[]
     data?: DocModel[]
     onDelete?: (id: string) => void
+    onChange?: (id: string, data: CreateDocModel) => void
 }
 
-const CustomTable: FC<Props> = ({ headerConfig, data, onDelete }) => {
+
+const CustomTable: FC<Props> = ({ headerConfig, data, onDelete, onChange }) => {
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -62,7 +65,10 @@ const CustomTable: FC<Props> = ({ headerConfig, data, onDelete }) => {
                                 {item.employeeSignatureName}
                             </StyledTableCell>
                             <StyledTableCell align="right">
-                                <IconButton onClick={() => onDelete(item.id)}><Delete /></IconButton>
+                                <IconButton onClick={() => onChange!(item.id, item)}><Edit /></IconButton>
+                            </StyledTableCell>
+                            <StyledTableCell align="right">
+                                <IconButton onClick={() => onDelete!(item.id)}><Delete /></IconButton>
                             </StyledTableCell>
                         </StyledTableRow>
                     ))}
