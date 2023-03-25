@@ -5,6 +5,7 @@ import { CreateDocModel } from '@/shared/api/docs'
 import CustomTable from '@/shared/ui/table'
 import { Button, Container, Skeleton } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 
 
@@ -12,6 +13,7 @@ const Docs = () => {
     const dispatch = useAppDispatch()
     const { items, isLoading, updatingDoc } = useAppSelector((state) => state.documents)
     const [isActive, setIsActive] = useState(false)
+    const navigate = useNavigate()
 
     useEffect(() => {
         dispatch(getDocs())
@@ -36,6 +38,11 @@ const Docs = () => {
         handleCloseModal()
     }
 
+    const onLogOut = () => {
+        localStorage.removeItem('token')
+        navigate('/')
+    }
+
     const handleOpenModal = () => setIsActive(true)
     const handleCloseModal = () => setIsActive(false)
 
@@ -43,7 +50,7 @@ const Docs = () => {
 
     return (
         <Container component={'main'}>
-            <Button onClick={handleOpenModal}>Create Doc</Button>
+            <Button onClick={onLogOut}>LogOut</Button>
             {isLoading ? (
                 <>
                     <Skeleton animation="wave" />
@@ -56,6 +63,7 @@ const Docs = () => {
                 <>
                     <CustomTable data={items} onDelete={handleDelete} onChange={setUpdate} />
                     <CustomCreateDocModal open={isActive} onClose={handleCloseModal} onSubmit={handleCreateDoc} onUpdate={handleUpdateDoc} />
+                    <Button onClick={handleOpenModal}>Create Doc</Button>
                 </>
 
             )}

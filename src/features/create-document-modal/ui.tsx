@@ -6,9 +6,9 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import styles from './index.module.scss'
-import moment from 'moment'
 import { useAppDispatch, useAppSelector } from '@/app/store/store'
 import { clearUpdateDoc } from '@/entities/doc'
+import dayjs, { Dayjs } from 'dayjs';
 
 
 interface Props {
@@ -57,14 +57,14 @@ const ModalContent: FC<Props> = ({ open, onSubmit, onClose, onUpdate }) => {
     const handleCompanySigDate = (e: any) => {
         setData((prev) => ({
             ...prev,
-            companySigDate: moment(e).format('YYYY-MM-DD'),
+            companySigDate: dayjs(e).format('YYYY-MM-DD'),
         }))
     }
 
     const handleEmployeeSigDate = (e: any) => {
         setData((prev) => ({
             ...prev,
-            employeeSigDate: moment(e).format('YYYY-MM-DD'),
+            employeeSigDate: dayjs(e).format('YYYY-MM-DD'),
         }))
     }
 
@@ -142,6 +142,7 @@ const ModalContent: FC<Props> = ({ open, onSubmit, onClose, onUpdate }) => {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker
                                     label="Company Sig Date"
+                                    value={dayjs(data?.companySigDate)}
                                     onChange={handleCompanySigDate}
 
                                 />
@@ -151,7 +152,9 @@ const ModalContent: FC<Props> = ({ open, onSubmit, onClose, onUpdate }) => {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker
                                     label="Employee Sig Date"
+                                    value={dayjs(data?.employeeSigDate)}
                                     onChange={handleEmployeeSigDate}
+
 
                                 />
                             </LocalizationProvider>
