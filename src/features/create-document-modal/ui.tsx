@@ -36,7 +36,6 @@ const ModalContent: FC<Props> = ({ open, onSubmit, onClose, onUpdate }) => {
 
     useEffect(() => {
         if (updatingDoc) {
-            console.log(updatingDoc)
             const { id, ...rest } = updatingDoc
             setData(rest)
         } else {
